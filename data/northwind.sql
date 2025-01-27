@@ -52,8 +52,8 @@ CREATE TABLE categories (
 --
 
 CREATE TABLE customer_customer_demo (
-    customer_id bpchar NOT NULL,
-    customer_type_id bpchar NOT NULL
+    customer_id character varying(20) NOT NULL,
+    customer_type_id character varying(20) NOT NULL
 );
 
 
@@ -62,7 +62,7 @@ CREATE TABLE customer_customer_demo (
 --
 
 CREATE TABLE customer_demographics (
-    customer_type_id bpchar NOT NULL,
+    customer_type_id character varying(20) NOT NULL,
     customer_desc text
 );
 
@@ -72,7 +72,7 @@ CREATE TABLE customer_demographics (
 --
 
 CREATE TABLE customers (
-    customer_id bpchar NOT NULL,
+    customer_id character varying(20) NOT NULL,
     company_name character varying(40) NOT NULL,
     contact_name character varying(30),
     contact_title character varying(30),
@@ -130,7 +130,7 @@ CREATE TABLE employee_territories (
 
 CREATE TABLE orders (
     order_id smallint NOT NULL,
-    customer_id bpchar,
+    customer_id character varying(20),
     employee_id smallint,
     order_date date,
     required_date date,
@@ -170,7 +170,7 @@ CREATE TABLE products (
 
 CREATE TABLE region (
     region_id smallint NOT NULL,
-    region_description bpchar NOT NULL
+    region_description character varying(20) NOT NULL
 );
 
 
@@ -212,7 +212,7 @@ CREATE TABLE suppliers (
 
 CREATE TABLE territories (
     territory_id character varying(20) NOT NULL,
-    territory_description bpchar NOT NULL,
+    territory_description character varying(20) NOT NULL,
     region_id smallint NOT NULL
 );
 

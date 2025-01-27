@@ -1,0 +1,82 @@
+version: 1
+default_environment: dev
+project_id: 12173707-1b7c-4628-8263-98de0f9831ee
+environments:
+- name: dev
+- name: staging
+- name: prod
+plugins:
+  extractors:
+  - name: tap-csv
+    variant: meltanolabs
+    pip_url: git+https://github.com/MeltanoLabs/tap-csv.git
+    config:
+      add_metadata_columns: false
+  - name: pipeline1-tap-csv
+    inherit_from: tap-csv
+    config:
+      files:
+      - entity: order_details
+        path: ./data/input/order_details.csv
+        keys: [order_id, product_id]
+  - name: pipeline2-tap-csv-from-csv
+    inherit_from: tap-csv
+    config:
+      files:
+      - entity: order_details
+        path: ./data/output/csv/2025-01-27/order_details.csv
+        keys: [order_id, product_id]
+  - name: tap-postgres
+    variant: meltanolabs
+    pip_url: git+https://github.com/MeltanoLabs/tap-postgres.git
+    config:
+      database: northwind
+      user: northwind_user
+      password: thewindisblowing
+      port: 5432
+      host: localhost
+      filter_schemas:
+      - public
+  - name: tap-csv-from-postgres
+    inherit_from: tap-csv
+    config:
+      csv_files_definition: ./data/postgres-files.json
+      add_metadata_columns: false
+  loaders:
+  - name: target-csv
+    variant: meltanolabs
+    pip_url: git+https://github.com/MeltanoLabs/target-csv.git
+  - name: pipeline1-target-csv-from-csv
+    inherit_from: target-csv
+    config:
+      output_path: ./data/output/
+      destination_path: ./data/output/
+      file_naming_scheme: csv/{datestamp}/{stream_name}.csv
+  - name: pipeline1-target-csv-from-postgres
+    inherit_from: target-csv
+    config:
+      output_path: ./data/output/
+      destination_path: ./data/output/
+      file_naming_scheme: postgres/{datestamp}/{stream_name}.csv
+  - name: target-postgres
+    variant: meltanolabs
+    pip_url: meltanolabs-target-postgres
+    config:
+      database: output_northwind
+      user: northwind_user
+      host: localhost
+      port: 5433
+      default_target_schema: public
+      add_record_metadata: false
+      activate_version: false
+jobs:
+- name: pipeline1
+  tasks:
+  - pipeline1-tap-csv pipeline1-target-csv-from-csv tap-postgres pipeline1-target-csv-from-postgres
+- name: pipeline2
+  tasks:
+  - tap-csv-from-postgres target-postgres pipeline2-tap-csv-from-csv target-postgres
+- name: full-pipeline
+  tasks:
+  - pipeline1-tap-csv pipeline1-target-csv-from-csv tap-postgres pipeline1-target-csv-from-postgres
+    tap-csv-from-postgres target-postgres pipeline2-tap-csv-from-csv target-postgres

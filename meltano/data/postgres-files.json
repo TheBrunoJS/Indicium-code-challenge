@@ -1,0 +1,57 @@
+[
+  {
+    "entity": "categories",
+    "path": "./data/output/postgres/2025-01-27/public-categories.csv",
+    "keys": ["category_id"]
+  },
+  {
+    "entity": "customers",
+    "path": "./data/output/postgres/2025-01-27/public-customers.csv",
+    "keys": ["customer_id"]
+  },
+  {
+    "entity": "employees",
+    "path": "./data/output/postgres/2025-01-27/public-employees.csv",
+    "keys": ["employee_id"]
+  },
+  {
+    "entity": "employee_territories",
+    "path": "./data/output/postgres/2025-01-27/public-employee_territories.csv",
+    "keys": ["employee_id", "territory_id"]
+  },
+  {
+    "entity": "orders",
+    "path": "./data/output/postgres/2025-01-27/public-orders.csv",
+    "keys": ["order_id", "customer_id", "employee_id", "ship_via"]
+  },
+  {
+    "entity": "products",
+    "path": "./data/output/postgres/2025-01-27/public-products.csv",
+    "keys": ["product_id", "supplier_id", "category_id"]
+  },
+  {
+    "entity": "region",
+    "path": "./data/output/postgres/2025-01-27/public-region.csv",
+    "keys": ["region_id"]
+  },
+  {
+    "entity": "shippers",
+    "path": "./data/output/postgres/2025-01-27/public-shippers.csv",
+    "keys": ["shipper_id"]
+  },
+  {
+    "entity": "suppliers",
+    "path": "./data/output/postgres/2025-01-27/public-suppliers.csv",
+    "keys": ["supplier_id"]
+  },
+  {
+    "entity": "territories",
+    "path": "./data/output/postgres/2025-01-27/public-territories.csv",
+    "keys": ["territory_id", "region_id"]
+  },
+  {
+    "entity": "us_states",
+    "path": "./data/output/postgres/2025-01-27/public-us_states.csv",
+    "keys": ["state_id"]
+  }
+]
