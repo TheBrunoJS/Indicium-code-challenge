@@ -24,7 +24,7 @@ plugins:
     config:
       files:
       - entity: order_details
-        path: ./data/output/csv/2025-01-27/order_details.csv
+        path: ./data/output/csv/${INIT_DAY}/order_details.csv
         keys: [order_id, product_id]
   - name: tap-postgres
     variant: meltanolabs
@@ -34,13 +34,25 @@ plugins:
       user: northwind_user
       password: thewindisblowing
       port: 5432
-      host: localhost
+      host: airflow-db-1
       filter_schemas:
       - public
   - name: tap-csv-from-postgres
     inherit_from: tap-csv
     config:
-      csv_files_definition: ./data/postgres-files.json
+      files: [{entity: categories, path: './data/output/postgres/${INIT_DAY}/public-categories.csv',
+          keys: [category_id]}, {entity: customers, path: './data/output/postgres/${INIT_DAY}/public-customers.csv',
+          keys: [customer_id]}, {entity: employees, path: './data/output/postgres/${INIT_DAY}/public-employees.csv',
+          keys: [employee_id]}, {entity: employee_territories, path: './data/output/postgres/${INIT_DAY}/public-employee_territories.csv',
+          keys: [employee_id, territory_id]}, {entity: orders, path: './data/output/postgres/${INIT_DAY}/public-orders.csv',
+          keys: [order_id, customer_id, employee_id, ship_via]}, {entity: products,
+          path: './data/output/postgres/${INIT_DAY}/public-products.csv', keys: [
+            product_id, supplier_id, category_id]}, {entity: region, path: './data/output/postgres/${INIT_DAY}/public-region.csv',
+          keys: [region_id]}, {entity: shippers, path: './data/output/postgres/${INIT_DAY}/public-shippers.csv',
+          keys: [shipper_id]}, {entity: suppliers, path: './data/output/postgres/${INIT_DAY}/public-suppliers.csv',
+          keys: [supplier_id]}, {entity: territories, path: './data/output/postgres/${INIT_DAY}/public-territories.csv',
+          keys: [territory_id, region_id]}, {entity: us_states, path: './data/output/postgres/${INIT_DAY}/public-us_states.csv',
+          keys: [state_id]}]
       add_metadata_columns: false
   loaders:
   - name: target-csv
@@ -64,8 +76,9 @@ plugins:
     config:
       database: output_northwind
       user: northwind_user
-      host: localhost
-      port: 5433
+      password: thewindisblowing
+      host: airflow-db2-1
+      port: 5432
       default_target_schema: public
       add_record_metadata: false
       activate_version: false

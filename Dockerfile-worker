@@ -1,0 +1,14 @@
+FROM apache/airflow:2.10.4-python3.10
+
+USER root
+
+RUN apt-get update && apt-get -y install git
+
+USER airflow
+
+RUN [ ! -d "/.venvs/meltano" ] && python3 -m venv /opt/airflow/.venvs/meltano || echo "Ambiente virtual já criado"
+
+RUN /opt/airflow/.venvs/meltano/bin/pip install meltano
+
+
+ENV PATH="/opt/airflow/.venvs/meltano/bin:$PATH"
