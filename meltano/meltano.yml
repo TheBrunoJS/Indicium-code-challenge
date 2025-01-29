@@ -34,7 +34,7 @@ plugins:
       user: northwind_user
       password: thewindisblowing
       port: 5432
-      host: airflow-db-1
+      host: indicium-code-challenge-db-1
       filter_schemas:
       - public
   - name: tap-csv-from-postgres
@@ -77,7 +77,7 @@ plugins:
       database: output_northwind
       user: northwind_user
       password: thewindisblowing
-      host: airflow-db2-1
+      host: indicium-code-challenge-db2-1
       port: 5432
       default_target_schema: public
       add_record_metadata: false
