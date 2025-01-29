@@ -1,0 +1,14 @@
+# Instalação dos plugins necessários para a execução das pipelines
+docker exec -it indicium-code-challenge-airflow-worker-1 /bin/bash -c "cd meltano && /opt/airflow/.venvs/meltano/bin/meltano install"
+
+
+# Ativando o agendamento da DAG meltano-pipelines
+docker exec -it indicium-code-challenge-airflow-scheduler-1 /bin/bash -c "airflow dags unpause meltano-pipelines"
+
+
+# Executando a DAG meltano-pipelines
+docker exec -it indicium-code-challenge-airflow-scheduler-1 /bin/bash -c "airflow dags trigger meltano-pipelines"
+
+
+# Verificando o status das últimas execuções de meltano-pipelines
+docker exec -it indicium-code-challenge-airflow-scheduler-1 /bin/bash -c "airflow dags list-runs -d meltano-pipelines"
